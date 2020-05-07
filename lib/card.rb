@@ -7,3 +7,6 @@ class Card
     @rank = rank
   end
 end
+
+
+MAKE CHANGED TO THIS BRANCH!
