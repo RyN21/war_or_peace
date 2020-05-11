@@ -6,7 +6,6 @@ class Turn
     @player2 = player2
     @spoils_of_war = []
     @type = :basic
-    @spoils = 0
   end
 
   def type
@@ -29,8 +28,8 @@ class Turn
     elsif @type == :war && @player1.deck.rank_of_card_at(2) < @player2.deck.rank_of_card_at(2)
       @winner = @player2
     else
-      @type = :mutually_assured_destruction
-      p "No Winner"
+      @type == :mutually_assured_destruction
+      @winner = "No winner"
     end
   end
 
@@ -57,6 +56,9 @@ class Turn
     if @winner == @player2
       @player2.deck.cards << @spoils_of_war.slice!(0..5)
       @player2.deck.cards.flatten!
+    end
+    if @winner == "No winner"
+      @spoils_of_war.slice!(0..5)
     end
   end
 end

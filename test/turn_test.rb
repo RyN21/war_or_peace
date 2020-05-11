@@ -83,7 +83,7 @@ class TurnTest < Minitest::Test
     assert_equal [@card7], @player2.deck.cards
   end
 
-  def test_it_if_awards_spoils
+  def test_it_if_awards_spoils_in_war_match
     @deck3 = Deck.new([@card4, @card2, @card5, @card8])
     @deck4 = Deck.new([@card1, @card3, @card6, @card7])
 
@@ -98,4 +98,38 @@ class TurnTest < Minitest::Test
     @turn.award_spoils
     assert_equal [@card7, @card4, @card2, @card5, @card1, @card3, @card6], @player2.deck.cards
   end
+
+  def test_it_if_awards_spoils_in_basic_match
+    @deck3 = Deck.new([@card4, @card2, @card5, @card8])
+    @deck4 = Deck.new([@card9, @card3, @card6, @card7])
+
+    @player1 = Player.new("Megag", @deck3)
+    @player2 = Player.new("Aurora", @deck4)
+
+    @turn = Turn.new(@player1, @player2)
+    assert_equal :basic, @turn.type
+    assert_equal "Aurora", @turn.winner.name
+    @turn.pile_cards
+    assert_equal [@card4, @card9], @turn.spoils_of_war
+    @turn.award_spoils
+    assert_equal [@card3, @card6, @card7,@card4, @card9], @player2.deck.cards
+  end
+
+  def test_it_if_awards_spoils_in_mut_assured_destruction_match
+    @deck3 = Deck.new([@card6, @card2, @card1, @card8])
+    @deck4 = Deck.new([@card9, @card3, @card4, @card7])
+
+    @player1 = Player.new("Megag", @deck3)
+    @player2 = Player.new("Aurora", @deck4)
+
+    @turn = Turn.new(@player1, @player2)
+    assert_equal :mutually_assured_destruction, @turn.type
+    assert_equal "No winner", @turn.winner
+    @turn.pile_cards
+    assert_equal [], @turn.spoils_of_war
+    @turn.award_spoils
+    assert_equal [@card8], @player1.deck.cards
+    assert_equal [@card7], @player2.deck.cards
+  end
+
 end
