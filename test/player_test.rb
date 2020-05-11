@@ -11,7 +11,7 @@ class PlayerTest < Minitest::Test
     @card3 = Card.new(:heart, 'Ace', 14)
 
     cards = [@card1, @card2, @card3]
-    @deck = Deck.new([cards])
+    @deck = Deck.new(cards)
     @player = Player.new('Clarisa', @deck)
   end
 
@@ -28,6 +28,17 @@ class PlayerTest < Minitest::Test
   end
 
   def test_if_player_has_lost
-    assert_equal
+    assert_equal false, @player.has_lost?
+  end
+
+  def test_it_can_remove_card
+
+    @player.deck.remove_card
+    assert_equal false, @player.has_lost?
+    @player.deck.remove_card
+    assert_equal false, @player.has_lost?
+    @player.deck.remove_card
+    assert_equal true, @player.has_lost?
+
   end
 end
